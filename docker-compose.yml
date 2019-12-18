@@ -1,0 +1,11 @@
+version: "3"
+services:
+  node:
+    build:
+      context: .
+    command: yarn run start
+    volumes:
+      - .:/code
+      - /code/node_modules
+    ports:
+      - "3000:3000"

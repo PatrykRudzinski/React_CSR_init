@@ -1,0 +1,34 @@
+{
+  "env": {
+    "production": {
+      "plugins": [
+        "@babel/plugin-proposal-optional-chaining",
+        [
+          "babel-plugin-styled-components",
+          {
+            "displayName": false,
+            "fileName": false,
+            "minify": true,
+            "transpileTemplateLiterals": true,
+            "pure": true
+          }
+        ]
+      ]
+    },
+    "development": {
+      "plugins": [
+        "@babel/plugin-proposal-optional-chaining",
+        [
+          "babel-plugin-styled-components",
+          {
+            "displayName": true,
+            "fileName": true,
+            "minify": false,
+            "transpileTemplateLiterals": false,
+            "pure": false
+          }
+        ]
+      ]
+    }
+  }
+}

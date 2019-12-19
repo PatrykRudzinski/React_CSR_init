@@ -30,7 +30,7 @@ const ThemeSwitcher = () => {
   };
   useEffect(() => {
     changeTheme(darkTheme ? 'DARK' : 'DEFAULT');
-  }, [darkTheme]);
+  }, [darkTheme, changeTheme]);
   return (
     <div>
       <StyledContainer onClick={changeHandler}>

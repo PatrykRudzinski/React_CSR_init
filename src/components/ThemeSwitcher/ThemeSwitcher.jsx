@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { useThemeContext } from 'context/ThemeContext';
 
@@ -25,9 +25,9 @@ const StyledSwitcher = styled.div`
 const ThemeSwitcher = () => {
   const changeTheme = useThemeContext();
   const [darkTheme, setDarkTheme] = useState(false);
-  const changeHandler = () => {
-    setDarkTheme(currentTheme => !currentTheme);
-  };
+  const changeHandler = useCallback(() => (
+    setDarkTheme(currentTheme => !currentTheme)
+  ), []);
   useEffect(() => {
     changeTheme(darkTheme ? 'DARK' : 'DEFAULT');
   }, [darkTheme, changeTheme]);

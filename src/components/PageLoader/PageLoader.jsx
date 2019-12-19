@@ -1,10 +1,13 @@
 import React from 'react';
 import FullScreen from 'containers/FullScreen';
+import { PageTransitionWrapper } from 'containers';
 
 const PageLoader = () => (
-  <FullScreen>
+  <PageTransitionWrapper>
+    <FullScreen>
       Loading.....!
-  </FullScreen>
+    </FullScreen>
+  </PageTransitionWrapper>
 );
 
 export default PageLoader;

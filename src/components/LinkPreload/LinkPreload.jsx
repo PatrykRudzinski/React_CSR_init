@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { paths } from 'constants/routes';
@@ -10,7 +10,10 @@ const LinkPreload = ({
   useEffect(() => {
     if (preload === 'onMount') preloadRouteComponent(to);
   }, [preload, to]);
-  const mouseEnterHandler = preload === 'onMouseEnter' ? () => preloadRouteComponent(to) : null;
+  const mouseEnterHandler = useMemo(
+    () => (preload === 'onMouseEnter' ? () => preloadRouteComponent(to) : null),
+    [preload, to],
+  );
   return (
     <Link to={to} onMouseEnter={mouseEnterHandler} {...rest}>
       {children}

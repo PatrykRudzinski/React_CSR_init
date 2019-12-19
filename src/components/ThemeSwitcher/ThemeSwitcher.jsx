@@ -26,7 +26,7 @@ const ThemeSwitcher = () => {
   const changeTheme = useThemeContext();
   const [darkTheme, setDarkTheme] = useState(false);
   const changeHandler = () => {
-    setDarkTheme(!darkTheme);
+    setDarkTheme(currentTheme => !currentTheme);
   };
   useEffect(() => {
     changeTheme(darkTheme ? 'DARK' : 'DEFAULT');

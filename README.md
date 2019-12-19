@@ -9,7 +9,7 @@
     - [Utils](#utils)
 1. [Recommendations](#recommendations)
     - [HTML](#HTML)
-    - [Styles](#styles)
+    - [CSS](#css)
     - [JavaScript](#javascript)
         - [General](#general)
         - [React](#react)
@@ -20,9 +20,10 @@
 To run it locally you need `node` and `yarn` installed or just use Docker.
 
 #### Node
+___
 **Windows:**
 
-Just download installer from [here](https://nodejs.org/en/#home-downloadhead)
+Download installer from [here](https://nodejs.org/en/#home-downloadhead)
 
 **Linux (Ubuntu):**
 
@@ -31,14 +32,14 @@ Run:
 sudo apt-get update
 sudo apt-get install nodejs
 ```
-To manage node version easily use [n](https://www.npmjs.com/package/n) form npm:
+To manage node version easily use [n](https://www.npmjs.com/package/n) from npm:
 
 ```
 sudo yarn cache clean
 sudo yarn install -g n
 sudo n <version>
 ```
-version examples: *4.9.1*, *12.13.1*, *stable*, *latest*
+version => any node version (can be *stable* or *latest* too)
 
 **Other:**
 
@@ -46,7 +47,7 @@ Check [it](https://nodejs.org/en/download/package-manager/)
 
 
 #### Yarn
-
+___
 
 **Windows**
 
@@ -99,44 +100,45 @@ As above, but will fix some errors automatically
 
 [⬆ back to top](#react-CSR-boilerplate)
 ## Files structure
-That's my proposal to split files in React project. Feel free to adjust that to current project, but please be consistent in your choices. Keep in mind, is very easy to make React project bloated, so try hard to keep files arrangement in any logic way.
+That's my proposal files structure in React project. Feel free to adjust that to current project, but please be consistent in your choices. Keep in mind, is very easy to make React project bloated, so try hard to keep files arrangement in any logic way.
 
 My general approach is create directory for **every** component, and export it as default. So it should looks something like that:
 
 Button/ | | | 
 --- | --- | --- | 
-| | _components/ | optional directory, use it if main component needs any dedicated child component |
-| | _utils/| optional directory, keep here utilities used by main components |
+| | _components/ | optional directory, use it if main component needs any dedicated child component, but don't go recursive |
+| | _utils/| optional directory, keep here any separated logic used by main components |
 | | Button.jsx | component file |
 | | Button.test.jsx | test file |
-| | index.js | just exports Button.jsx as default, to allow import it in easy way |
+| | index.js | just exports Button.jsx as default, to import it in easy way |
 
-Some directories has *global* index.js. That allows perform a multiple import, for example: ``import { Button, PageTitle } from 'components'``
+Some directories has *global* index.js. That allows perform a multiple import, for example: ``import { Button, PageTitle } from 'components'``. But be careful to don't create a dependency cycle.
 
-To avoid creating that manually check [generateComponent] in Utils(#generate-component)
+To avoid creating all that structure manually check [generateComponent](#generate-component) in Utils.
 
 ### Source files
 Note: to prevent PyCharm ``Module is not installed`` warning on imported files just mark **src** as **Sources Root**.
 
 All application logic is placed in ``/src``:
-___
-
 #### /root
 Root of application:
  
  ``App.jsx`` is a good place to wrap application with any kind of global providers, or import application-wide files.
  
- ``Router.jsx`` define global router here, but keep in mind use object as router definition can be better than hardcode it in jsx.
+ ``Router.jsx`` define global router here, but keep in mind use object as router definition can be better idea than hardcode it in jsx. As probably you already know nesting is possible in react-router, if you need create it in specific view.
  
 #### /pages
-Containers for views, that directory should be a mirror of routing system.
+Containers for views, that directory should a mirror of routing system in general.
  
 #### /components & /containers
 Place for components and containers:
 
 ``components`` atomic reusable components
 
-``containers`` mainly wrappers for components 
+``containers`` mainly wrappers for components
+
+#### /hooks
+Any kind of custom hooks.
 
 #### /context
 Place for Context logic. It would be nice if all context files will be created in one convention.
@@ -145,10 +147,10 @@ Place for Context logic. It would be nice if all context files will be created i
 Put here config files for used libraries.
 
 #### /styles
-Everything related to styles
+Everything related to styles, themes or animations.
 
 #### /utils
-Place for widely used functions which isn't components, but can be used anywhere.
+Place for widely used functions which aren't components, but can be used anywhere.
 
 #### /assets
 
@@ -157,14 +159,14 @@ Keep here images, videos etc.
 ### Special files
 
 #### .babelrc
-Allow to pass configuration to to babel.
+Allow to pass configuration to babel.
 
 #### .env.*
 Place to keep environment variables
 
 Each variable must start with ``REACT_APP_``, later you can access to it by `process.env.REACT_APP_*`, but ``NODE_ENV`` is still accessible.
 
-Wildcard in .env file can be replaced by: local, development, test, production, development.local, test.local, production.local.
+Wildcard in .env file can be replaced by: local, development, test, production, development.local, test.local or production.local.
 
 **Warning: Do not keep any secrets here!**
 
@@ -183,7 +185,7 @@ Here you can override webpack configuration without ejecting. Look [here](https:
 
 #### jsconfig.json
 
-Setting src as baseUrl, that allows to import directly from ``/src``, for example: ``import client from 'config/apollo/client';``
+Set src as base url, that allows to import directly from ``/src``, for example: ``import client from 'config/apollo/client';``
 
 ### Utils
 
@@ -204,22 +206,21 @@ After providing `ComponentName` and `path` creates following files structure in 
 To update *global* index.js just run it with flag `-u`, leaving empty name will cause just *global* index.js update without creating component.
 
 You can pass COMPONENT_PATH variable to avoid asking for path
-## Recommendations
+
 [⬆ back to top](#react-CSR-boilerplate)
+
+## Recommendations
 ### HTML
 
-Finally React always render HTML, so please keep that in mind and use semantic tags in proper way. Do not limit yourself to `div` and `img`.
-[⬆ back to top](#react-CSR-boilerplate)
-### Styles
+Finally React always is rendered to HTML, so please keep that in mind and use semantic tags in proper way. Do not limit yourself to `div` and `img`.
+### CSS
 
 **Main goal is dont repeat yourself.** I highly recommend [styled-components](https://www.styled-components.com/docs) to implement styles.
 
 Most of css frameworks can handle theme provider logic, so use it as well. I've created `_core.js` file which contains core variables and functions (take a moment to analyze that file please), and specific themes like default or dark. Themes extends core object and add extra variables, that allow us to switch between themes (analyze `src/context/ThemeContext` and `src/components/ThemeSwitcher`).
 
 As you can find in `/styles` I've created animation directory to keep all animations in one place.
-[⬆ back to top](#react-CSR-boilerplate)
 ### JavaScript
-[⬆ back to top](#react-CSR-boilerplate)
 #### General
 ##### Destructuring
 ____
@@ -356,7 +357,7 @@ As you know JS is dynamically typed language, what can cause problems in some ca
 
 ##### Generic components
 ___
-Try do create generic components, for example instead of creating `<ButtonPrimary />` and `<ButtonSecondary />` just create `<Button displayType='primary'/>` and implement logic to manage display type basing on props
+Create as much generic components as it is possible, for example instead of creating `<ButtonPrimary />` and `<ButtonSecondary />` just create `<Button displayType='primary'/>` and implement logic to manage display type basing on props
 
 ##### One component per file
 ___
